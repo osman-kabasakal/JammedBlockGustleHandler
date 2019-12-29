@@ -18,6 +18,7 @@
     "expo": "~36.0.0",
     "expo-ads-admob": "^8.0.0",
     "expo-gl": "^8.0.0",
+    "expo-secure-store": "~8.0.0",
     "expo-three": "^5.3.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",

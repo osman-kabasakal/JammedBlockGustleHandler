@@ -15,6 +15,7 @@ import { OyunData } from "../../types/DataTypes";
 import Block, { BlockProps } from "../lib/helpers/CreateBlock";
 import BlockMembers from "../lib/helpers/BlockMembers";
 import { Overlay,Text } from "react-native-elements";
+import RewardManager from "../lib/helpers/RewardAdMod";
 
 export default class GameScreen extends MainLayout {
   static navigationOptions: NavigationStackOptions = {
@@ -24,16 +25,23 @@ export default class GameScreen extends MainLayout {
   parentRectangle: LayoutRectangle = null;
   position = new Animated.ValueXY();
   _panResponder: PanResponderInstance;
+  
   constructor(props) {
     super(props);
     this.bannerActive = false;
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
+RewardManager.hasClaimNewGame().then((val)=>{
+this.setState({_hasClaim:val});
+});
   }
+
+  
 
   state = {
     isWorldLoad: false,
-    isComplete:false
+    isComplete:false,
+    _hasClaim:false
   };
   timeout: any;
   content = () => {
@@ -41,7 +49,7 @@ export default class GameScreen extends MainLayout {
     var oyunIndex = this.props.navigation.getParam("index");
     if (id in Oyunlar) {
       return (
-        <SafeAreaView>
+        <SafeAreaView style={{display:this.state._hasClaim?"flex":"none"}}>
           <ImageBackground
             source={require("../../assets/block_screen_blank.jpg")}
             style={{ height: "100%", width: "100%" }}

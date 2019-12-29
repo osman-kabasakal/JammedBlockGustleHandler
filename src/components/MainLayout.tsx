@@ -1,43 +1,54 @@
 import React, { Component } from "react";
-import {
-  NavigationStackProp,
-  NavigationStackOptions
-} from "react-navigation-stack";
+import { NavigationStackOptions } from "react-navigation-stack";
 import { NavComponentProp } from "../../types/IScreen";
-import { SafeAreaView, View, Text } from "react-native";
+import { View } from "react-native";
 import MainStyle from "../lib/contants/styles/Main";
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded
-} from 'expo-ads-admob';
+import { AdMobBanner } from "expo-ads-admob";
+import RewardManager from "../lib/helpers/RewardAdMod";
 export default abstract class MainLayout extends Component<NavComponentProp> {
-  static navigationOptions: NavigationStackOptions;
-  bannerActive:boolean=true;
+  static navigationOptions: NavigationStackOptions={
+    headerRight:{
+
+    }
+  };
+  revardAdMob=RewardManager;
+  bannerActive: boolean = true;
   constructor(props) {
     super(props);
+    // this.state={...{hasClaim:this.revardAdMob.}}
+    // this.bannerActive.addE
   }
 
   render() {
     return (
       <View style={MainStyle.Container.Main.main}>
-        {this.bannerActive&&(<View style={MainStyle.Container.AdMobContent.top}>
-          <AdMobBanner
-  bannerSize="smartBannerPortrait"
-  adUnitID="ca-app-pub-7033389954637971/3460097584" // Test ID, Replace with your-admob-unit-id
-  servePersonalizedAds // true or false
-  onDidFailToReceiveAdWithError={(val)=>{console.log("banner hata",val);}} />
-        </View>)}
+        {this.bannerActive && (
+          <View style={MainStyle.Container.AdMobContent.top}>
+            <AdMobBanner
+              bannerSize="smartBannerPortrait"
+              adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+              testID="EMULATOR29X3X2X0"
+              servePersonalizedAds // true or false
+              onDidFailToReceiveAdWithError={val => {
+                console.log("banner hata", val);
+              }}
+            />
+          </View>
+        )}
         <View style={MainStyle.Container.Main.content}>{this.content()}</View>
-        {this.bannerActive&&
-        (<View style={MainStyle.Container.AdMobContent.buttom}>
-        <AdMobBanner
-  bannerSize="smartBannerPortrait"
-  adUnitID="ca-app-pub-7033389954637971/3839371539" // Test ID, Replace with your-admob-unit-id
-  servePersonalizedAds // true or false
-  onDidFailToReceiveAdWithError={(val)=>{console.log("banner hata",val);}} />
-        </View>)}
+        {this.bannerActive && (
+          <View style={MainStyle.Container.AdMobContent.buttom}>
+            <AdMobBanner
+              bannerSize="smartBannerPortrait"
+              adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+              testID="EMULATOR29X3X2X0"
+              servePersonalizedAds // true or false
+              onDidFailToReceiveAdWithError={val => {
+                console.log("banner hata", val);
+              }}
+            />
+          </View>
+        )}
       </View>
     );
   }
