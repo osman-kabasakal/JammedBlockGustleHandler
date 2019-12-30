@@ -16,11 +16,12 @@ import Block, { BlockProps } from "../lib/helpers/CreateBlock";
 import BlockMembers from "../lib/helpers/BlockMembers";
 import { Overlay,Text } from "react-native-elements";
 import RewardManager from "../lib/helpers/RewardAdMod";
+import Timer from "../components/Timer";
 
 export default class GameScreen extends MainLayout {
-  static navigationOptions: NavigationStackOptions = {
-    title: "Sıkışan Block"
-  };
+  static navigationOptions: NavigationStackOptions =Object.assign({},{...MainLayout.navigationOptions},{title: "Sıkışan Block",
+  headerRight:()=><Timer />
+});
 
   parentRectangle: LayoutRectangle = null;
   position = new Animated.ValueXY();
@@ -31,17 +32,13 @@ export default class GameScreen extends MainLayout {
     this.bannerActive = false;
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
-RewardManager.hasClaimNewGame().then((val)=>{
-this.setState({_hasClaim:val});
-});
   }
 
   
 
   state = {
     isWorldLoad: false,
-    isComplete:false,
-    _hasClaim:false
+    isComplete:false
   };
   timeout: any;
   content = () => {
@@ -49,7 +46,7 @@ this.setState({_hasClaim:val});
     var oyunIndex = this.props.navigation.getParam("index");
     if (id in Oyunlar) {
       return (
-        <SafeAreaView style={{display:this.state._hasClaim?"flex":"none"}}>
+        <SafeAreaView>
           <ImageBackground
             source={require("../../assets/block_screen_blank.jpg")}
             style={{ height: "100%", width: "100%" }}
@@ -76,7 +73,7 @@ this.setState({_hasClaim:val});
                 this.renderBlocks(Oyunlar[id][oyunIndex])}
             </View>
           </ImageBackground>
-
+          
           <Overlay isVisible={this.state.isComplete}
            onBackdropPress={()=>{this.setState({isComplete:false})}}>
             <Text>Bitirdin</Text>

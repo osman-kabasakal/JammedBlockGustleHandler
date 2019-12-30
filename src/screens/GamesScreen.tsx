@@ -14,7 +14,7 @@ import {
 import { OyunData } from "../../types/DataTypes";
 
 export default class GamesScreen extends MainLayout {
-  static navigationOptions: NavigationStackOptions = {
+  static navigationOptions: NavigationStackOptions = {...MainLayout.navigationOptions,
     title: "Oynun Seçimi"
   };
   content: () => JSX.Element | JSX.Element[] = () => {
