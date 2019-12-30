@@ -8,7 +8,7 @@ import { Card, Image, Divider, Text } from "react-native-elements";
 import { Seviyeler } from "../lib/datas/SeviyeData";
 
 export default class HomeScreen extends MainLayout {
-  static navigationOptions: NavigationStackOptions = {
+  static navigationOptions: NavigationStackOptions = {...MainLayout.navigationOptions,
     title: "Sıkışan Blok"
   };
 
