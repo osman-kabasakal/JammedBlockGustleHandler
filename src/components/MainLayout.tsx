@@ -1,23 +1,24 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 import { NavigationStackOptions } from "react-navigation-stack";
 import { NavComponentProp } from "../../types/IScreen";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, ActivityIndicator } from "react-native";
 import MainStyle from "../lib/contants/styles/Main";
 import { AdMobBanner } from "expo-ads-admob";
 import RewardManager from "../lib/helpers/RewardAdMod";
 import Timer from "./Timer";
+import { Icon,Overlay } from "react-native-elements";
 
 function ClaimeRender(props) {
   const [claimStatus, setClaimStatus] = useState(true);
   let sub=useRef("default");
   let registerSub=()=>{
-    sub.current=RewardManager.subscribeClaimStatus(val => {
-      console.log("subber Calim Sattus");
+    sub.current=RewardManager.claimStatus.subscribe(val => {
+      console.log("subber Calim Sattus",val);
       setClaimStatus(val);
     })
   }
   let removeSubs=()=>{
-    RewardManager.removeSubscribe(sub.current);
+    RewardManager.claimStatus.removeSubscribe(sub.current);
   }
   useEffect(() => {
     registerSub();
@@ -27,54 +28,15 @@ function ClaimeRender(props) {
 
   return (
     <View>
-      {claimStatus ? (
-        <Button
-          title={"set claim"}
-          onPress={() => {
-            RewardManager.setClaim();
-          }}
-        ></Button>
-      ) : (
-        <Timer timeFinishEvent={()=>{RewardManager.setClaim()}} reverse={true} downVal={RewardManager.claimActivateTime} startVal={RewardManager.claimLockedTime}/>
+      {!claimStatus && (
+        // <Timer timeFinishEvent={()=>{RewardManager.setClaim()}} reverse={true} downVal={RewardManager.claimActivateTime} startVal={RewardManager.claimLockedTime}/>
+        <Icon onPress={()=>{
+
+        }} name="lock" type="material" reverse color="red" backgroundColor="red"></Icon>
       )}
     </View>
   );
 }
-
-const RenderTime = props => {
-  const [TimeText, setTimeText] = useState("");
-  let intervalIds=useRef([]);
-  let registerInterval=(fn:()=>void,ms:number)=>{
-    intervalIds.current.push(setInterval(fn,ms));
-  }
-  let updateTime= () => {
-    let tmx=new Date(Date.now()).toLocaleTimeString();
-    setTimeText(tmx);
-  };
-  let clearIntervals=()=>{
-    intervalIds.current.forEach((id)=>clearInterval(id));
-  }
-  useEffect(() => {
-    // const interval = setInterval(
-    //   () => {
-    //     let tmx=new Date(Date.now()).toLocaleTimeString();
-    //     setTimeText(tmx);
-    //   },
-    //   1000
-    // );
-    registerInterval(updateTime,1000);
-    return clearIntervals;
-  }, [registerInterval,clearIntervals]);
-
-  return (
-    <Button
-      title={TimeText}
-      onPress={() => {
-        RewardManager.setClaim();
-      }}
-    ></Button>
-  );
-};
 
 export default abstract class MainLayout extends Component<NavComponentProp> {
   static navigationOptions: NavigationStackOptions = {
@@ -82,17 +44,32 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
   };
   revardAdMob = RewardManager;
   bannerActive: boolean = true;
+  state={
+    load:false
+  }
   constructor(props) {
     super(props);
-    this.revardAdMob.hasClaimNewGame();
-    // this.state={...{hasClaim:this.revardAdMob.}}
-    // this.bannerActive.addE
+    this.props.navigation.isFocused()
+  }
+  private rewardActiveSubscribeId:string;
+
+  componentDidMount(){
+    this.rewardActiveSubscribeId= RewardManager.rewardIsActive.subscribe((val)=>{
+      this.setState({load:val});
+    })
+  }
+
+  componentDidUpdate(){
+  }
+
+  componentWillUnmount(){
+    RewardManager.rewardIsActive.removeSubscribe(this.rewardActiveSubscribeId);
   }
 
   render() {
     return (
       <View style={MainStyle.Container.Main.main}>
-        {this.bannerActive && (
+        {/* {this.bannerActive && (
           <View style={MainStyle.Container.AdMobContent.top}>
             <AdMobBanner
               bannerSize="smartBannerPortrait"
@@ -104,9 +81,9 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
               }}
             />
           </View>
-        )}
+        )} */}
         <View style={MainStyle.Container.Main.content}>{this.content()}</View>
-        {this.bannerActive && (
+        {/* {this.bannerActive && (
           <View style={MainStyle.Container.AdMobContent.buttom}>
             <AdMobBanner
               bannerSize="smartBannerPortrait"
@@ -118,7 +95,10 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
               }}
             />
           </View>
-        )}
+        )} */}
+        <Overlay isVisible={this.state.load&&this.props.navigation.isFocused()} animated={true} width="auto" height="auto">
+          <ActivityIndicator ></ActivityIndicator>
+        </Overlay>
       </View>
     );
   }

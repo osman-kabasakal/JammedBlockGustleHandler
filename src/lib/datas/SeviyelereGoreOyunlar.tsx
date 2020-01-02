@@ -52,9 +52,7 @@ export var Oyunlar= {
             JammedPosition:0
         } as OyunData,
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:3,
@@ -66,9 +64,7 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:3,
@@ -80,9 +76,7 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:3,
@@ -94,9 +88,7 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:3,
@@ -110,9 +102,7 @@ export var Oyunlar= {
     ],
     seviye_2:[
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:2,
@@ -127,9 +117,7 @@ export var Oyunlar= {
     ],
     seviye_3:[
         {
-            screen:{
-                uri:"../../../assets/block_screen.jpg"
-            } ,
+            screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
                     x:1,

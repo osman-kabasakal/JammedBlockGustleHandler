@@ -37,6 +37,7 @@ export default class GameScreen extends MainLayout {
   
 
   state = {
+    ...this.state,
     isWorldLoad: false,
     isComplete:false
   };
