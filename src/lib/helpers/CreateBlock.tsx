@@ -38,9 +38,9 @@ export default class Block extends Component<BlockProps> {
     width: number;
     height: number;
   };
+  _gamePanHandler:GamePanHandlerInstance;
   constructor(props) {
     super(props);
-
     const {
       worldOpt: { step },
       worldOpt,
@@ -67,23 +67,24 @@ export default class Block extends Component<BlockProps> {
       blockMember:this.props.blockMember,
       finishCb:this.props.finishCb
     };
-    this._panResponder = GamePanHandlerInstance.create(this._panOpt);
-    
+    this._gamePanHandler=GamePanHandlerInstance.create(this._panOpt);
+    this._panResponder = this._gamePanHandler._panHandler;
   }
+
+  
 
   componentDidMount() {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  componentDidUpdate(){
+    
+  }
+
   componentWillUnmount() {}
 
   render() {
-    const {
-      worldOpt: { step },
-      objeOpt
-    } = this.props;
-    const { left, top } = this.position.getLayout();
     return (
       <Animated.View
         style={[
@@ -101,8 +102,6 @@ export default class Block extends Component<BlockProps> {
           }
         ]}
         {...this._panResponder.panHandlers}
-
-      
       ></Animated.View>
     );
   }

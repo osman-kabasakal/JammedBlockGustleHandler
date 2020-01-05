@@ -5,10 +5,12 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
   LayoutAnimation,
-  LayoutRectangle
+  LayoutRectangle,
+  PanResponderInstance
 } from "react-native";
 import { BlockPosition } from "../../../types/DataTypes";
 import BlockMembers from "./BlockMembers";
+import Observable from "./Observables";
 interface XYVal {
   x: number;
   y: number;
@@ -50,7 +52,10 @@ export default class GamePanHandlerInstance implements PanResponderCallbacks {
   _ismove: boolean = false;
   _MaxMinDistance: Distance;
   _WorldMaxMinDistance: Distance;
-  _isFinish:boolean=false;
+  _isFinish:Observable<boolean>=Observable.create(false);
+  _panStart:Observable<boolean>=Observable.create(false);
+  _panEnd:Observable<boolean>=Observable.create(false);
+  _panHandler:PanResponderInstance;
   constructor(public opt: GamePanHandlerInstanceCtorOpt) {
     this.position = opt.position;
     this._previousLeft = opt.realOpt.x;
@@ -67,8 +72,8 @@ export default class GamePanHandlerInstance implements PanResponderCallbacks {
       this.opt.realOpt = val;
       if(this.opt.isJammed){
         let rightPos=this.opt.realOpt.x+this.opt.objRectangle.width;
-        this._isFinish=rightPos>=(this.opt.worlOpt.parentRectangle.x+this.opt.worlOpt.parentRectangle.width-10)
-        if(this._isFinish){
+        this._isFinish.set(rightPos>=(this.opt.worlOpt.parentRectangle.x+this.opt.worlOpt.parentRectangle.width-10));
+        if(this._isFinish.get()){
           this.opt.finishCb();
           return;
         }
@@ -96,14 +101,17 @@ export default class GamePanHandlerInstance implements PanResponderCallbacks {
     };
   }
   static create(opt: GamePanHandlerInstanceCtorOpt) {
-    return PanResponder.create(new GamePanHandlerInstance(opt));
+    let instance=new GamePanHandlerInstance(opt);
+    instance._panHandler=PanResponder.create(instance);
+
+    return instance;
   }
 
   onStartShouldSetPanResponder = (evt, gesture) => {
-    return !this._isFinish;
+    return !this._isFinish.get();
   };
   onMoveShouldSetPanResponder = (evt, gesture) => {
-    return !this._isFinish;
+    return !this._isFinish.get();
   };
   onPanResponderStart: (
     e: GestureResponderEvent,
@@ -114,6 +122,7 @@ export default class GamePanHandlerInstance implements PanResponderCallbacks {
       { x: this._previousLeft, y: this._previousTop },
       this.opt.obje
     );
+    this._panStart.set(true);
   };
   onPanResponderMove: (
     e: GestureResponderEvent,
@@ -308,6 +317,7 @@ export default class GamePanHandlerInstance implements PanResponderCallbacks {
     );
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     this.position.setValue({ x: this._previousLeft, y: this._previousTop });
+    this._panEnd.set(true);
   };
   onPanResponderRelease = this.responderEnd;
   onPanResponderTerminate = this.responderEnd;

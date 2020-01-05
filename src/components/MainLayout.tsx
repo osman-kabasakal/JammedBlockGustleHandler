@@ -7,6 +7,7 @@ import { AdMobBanner } from "expo-ads-admob";
 import RewardManager from "../lib/helpers/RewardAdMod";
 import Timer from "./Timer";
 import { Icon,Overlay } from "react-native-elements";
+import { SafeAreaView } from "react-navigation";
 
 function ClaimeRender(props) {
   const [claimStatus, setClaimStatus] = useState(true);
@@ -37,8 +38,10 @@ function ClaimeRender(props) {
     </View>
   );
 }
-
-export default abstract class MainLayout extends Component<NavComponentProp> {
+interface mainState{
+load:boolean
+}
+export default abstract class MainLayout<TProp={[key:string]:any},TState={[key:string]:any}> extends Component<NavComponentProp&TProp> {
   static navigationOptions: NavigationStackOptions = {
     headerRight: () => <ClaimeRender />
   };
@@ -49,7 +52,7 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
   }
   constructor(props) {
     super(props);
-    this.props.navigation.isFocused()
+    this.props.navigation.isFocused();
   }
   private rewardActiveSubscribeId:string;
 
@@ -68,7 +71,7 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
 
   render() {
     return (
-      <View style={MainStyle.Container.Main.main}>
+      <SafeAreaView style={MainStyle.Container.Main.main}>
         {/* {this.bannerActive && (
           <View style={MainStyle.Container.AdMobContent.top}>
             <AdMobBanner
@@ -96,10 +99,10 @@ export default abstract class MainLayout extends Component<NavComponentProp> {
             />
           </View>
         )} */}
-        <Overlay isVisible={this.state.load&&this.props.navigation.isFocused()} animated={true} width="auto" height="auto">
+        <Overlay isVisible={this.state.load&&this.props.navigation.isFocused()} animated={false} width="auto" height="auto">
           <ActivityIndicator ></ActivityIndicator>
         </Overlay>
-      </View>
+      </SafeAreaView>
     );
   }
 

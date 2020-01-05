@@ -12,17 +12,17 @@ const MainStyle = {
       top: {
         // flex: 1,
         // width: "100%",
-        height: 50,
+        height: 60,
         padding: 0,
         margin: 0,
         backgroundColor: "black"
       },
       buttom: {
-        // flex: 1,
+        flex: 1,
         // width: "100%",
-        height: 50,
-        padding: 0,
-        margin: 0,
+        height: 70,
+        // padding: 0,
+        // margin: 0,
         backgroundColor: "#6B6868",
         // bottom:0
       }
@@ -40,11 +40,12 @@ const MainStyle = {
         // display: "flex",
         // flexWrap:"wrap",
         // height:"100%",
-        padding:"3%",
+        padding:"0%",
         alignSelf: "stretch",
         justifyContent: "space-evenly",
         alignItems: "stretch",
-        color:"white"
+        color:"white",
+        flexDirection:"column"
       }
     })
   }

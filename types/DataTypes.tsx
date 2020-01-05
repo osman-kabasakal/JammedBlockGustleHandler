@@ -8,12 +8,14 @@ export interface SeviyeData{
 }
 
 export interface OyunData{
+    gameId:string,
     screen:ImageSourcePropType;
     BlockPositions:BlockPosition[];
     JammedPosition:number
 }
 
 export interface BlockPosition{
+    id:string,
     x:number,
     y:number,
     length:number,

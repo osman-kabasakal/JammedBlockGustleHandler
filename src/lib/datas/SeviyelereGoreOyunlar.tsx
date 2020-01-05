@@ -1,48 +1,56 @@
 import { SeviyeyeGoreOyunData, SeviyeData, OyunData } from "../../../types/DataTypes";
 import {Seviyeler} from "./SeviyeData";
-export var Oyunlar= {
+export var Oyunlar:{[key:string]:OyunData[]}= {
     seviye_1:[
         {
+            gameId:"seviye_1_1",
             // screen:require("../../../assets/block_screen.jpg")
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_1_1_block_1",
                     x:0,
                     y:0,
                     length:3,
                     type:"horizantal"
                 },
                 {
+                    id:"seviye_1_1_block_2",
                     x:2,
                     y:1,
                     length:3,
                     type:"vertical"
                 },
                 {
+                    id:"seviye_1_1_block_3",
                     x:0,
                     y:5,
                     length:3,
                     type:"horizantal"
                 },
                 {
+                    id:"seviye_1_1_block_4",
                     x:0,
                     y:3,
                     length:2,
                     type:"vertical"
                 },
                 {
+                    id:"seviye_1_1_block_5",
                     x:5,
                     y:0,
                     length:3,
                     type:"vertical"
                 },
                 {
+                    id:"seviye_1_1_block_6",
                     x:4,
                     y:3,
                     length:2,
                     type:"horizantal"
                 },
                 {
+                    id:"seviye_1_1_block_7",
                     x:4,
                     y:4,
                     length:2,
@@ -52,9 +60,11 @@ export var Oyunlar= {
             JammedPosition:0
         } as OyunData,
         {
+            gameId:"seviye_1_2",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_1_2_block_1",
                     x:3,
                     y:0,
                     length:2,
@@ -64,9 +74,11 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
+            gameId:"seviye_1_3",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_1_3_block_1",
                     x:3,
                     y:0,
                     length:2,
@@ -76,9 +88,11 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
+            gameId:"seviye_1_4",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_1_4_block_1",
                     x:3,
                     y:0,
                     length:2,
@@ -88,9 +102,11 @@ export var Oyunlar= {
             JammedPosition:1
         },
         {
+            gameId:"seviye_1_5",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_1_5_block_1",
                     x:3,
                     y:0,
                     length:2,
@@ -102,9 +118,11 @@ export var Oyunlar= {
     ],
     seviye_2:[
         {
+            gameId:"seviye_2_1",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_2_1_block_1",
                     x:2,
                     y:0,
                     length:2,
@@ -117,9 +135,11 @@ export var Oyunlar= {
     ],
     seviye_3:[
         {
+            gameId:"seviye_3_1",
             screen:require("../../../assets/block_screen.jpg"),
             BlockPositions:[
                 {
+                    id:"seviye_3_1_block_1",
                     x:1,
                     y:0,
                     length:2,

@@ -1,9 +1,10 @@
 import React from "react";
 import { LayoutRectangle } from "react-native";
 import { BlockPosition } from "../../../types/DataTypes";
+import Observable from "./Observables";
 
 interface BlockMember {
-  cells: Array<Array<Boolean>>;
+  cells: Observable<Array<Array<boolean>>>;
 }
 
 interface WorldOpt {
@@ -22,9 +23,9 @@ export default class BlockMembers implements BlockMember {
   private _opt: WorldOpt;
   constructor(opt: WorldOpt) {
     this._opt = opt;
-    this.cells = Array<boolean[]>(6).fill([]).map(xp=>Array<boolean>(6).fill(true).map(x=>Boolean(true)));
+    this.cells = Observable.create(Array<boolean[]>(6).fill([]).map(xp=>Array<boolean>(6).fill(true).map(x=>Boolean(true))));
   }
-  cells: boolean[][];
+  cells: Observable<Array<Array<boolean>>>;
 
   static getInstance(worldOpt: WorldOpt) {
     if (typeof this._instance ==="undefined") {
@@ -45,24 +46,24 @@ export default class BlockMembers implements BlockMember {
           let verFloor=x-1;
           if(verFloor<0)
             return false;
-        return this.cells[y][verFloor];
+        return this.cells.get()[y][verFloor];
       }
       let verFloor=x+obj.length
       if(verFloor>5)
       return false;
-      return this.cells[y][verFloor];
+      return this.cells.get()[y][verFloor];
     }
     const {x,y}=this.getCellObj(position,obj,direction.verDirectin==="up");
     if(direction.verDirectin==="up"){
         let yAxis=y-1;
         if(yAxis<0)
         return false;
-        return this.cells[yAxis][x];
+        return this.cells.get()[yAxis][x];
     }else{
         let yAxis=y+obj.length;
         if(yAxis>5)
         return false;
-        return this.cells[yAxis][x];
+        return this.cells.get()[yAxis][x];
     }
   };
 
@@ -79,13 +80,17 @@ export default class BlockMembers implements BlockMember {
             for(let i=0;i<obj.length;i++){
                 let xStep=x+i>5?5:x+i;
                 let yStep=y;
-                this.cells[yStep][xStep]=setVal;
+                let arr=Array.from(this.cells.get())
+                arr[yStep][xStep]=setVal;
+                this.cells.set(arr);
             }
         }else{
             for(let hori=0;hori<obj.length;hori++){
                 let xStep=x;
                 let yStep=y+hori>5?5:y+hori;
-                this.cells[yStep][xStep]=setVal;
+                let arr=Array.from(this.cells.get())
+                arr[yStep][xStep]=setVal;
+                this.cells.set(arr);
             }
         }
     }

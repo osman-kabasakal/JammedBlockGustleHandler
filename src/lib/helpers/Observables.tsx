@@ -45,7 +45,7 @@ export default class  Observable<T> {
   subscribe(cb: (val: T, prevVal: T) => void) {
     let subscribeId = uid();
     this.subscriberList[subscribeId] = cb;
-    this.subscriberList[subscribeId](this.propVal,this.PrevVal);
+    // this.subscriberList[subscribeId](this.propVal,this.PrevVal);
     return subscribeId;
   }
 

@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { enableScreens } from 'react-native-screens';
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import HomeScreen from "./src/screens/Home";
 import MainStyle from "./src/lib/contants/styles/Main";
 import GamesScreen from "./src/screens/GamesScreen";
 import GameScreen from "./src/screens/Game";
-
+// enableScreens();
 const RootStack = createStackNavigator(
   {
     Home: {

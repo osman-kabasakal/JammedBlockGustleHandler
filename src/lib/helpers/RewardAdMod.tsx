@@ -38,7 +38,7 @@ class RewardAdMob {
   claimListener = undefined;
   private videoIsLoaded: Observable<boolean> = Observable.create(undefined);
   private isVideoClose: Observable<boolean> = Observable.create(undefined);
-  rewardIsActive:Observable<boolean>=Observable.create(false);
+  rewardIsActive: Observable<boolean> = Observable.create(false);
   private constructor() {
     this.applicationStart();
   }
@@ -56,7 +56,7 @@ class RewardAdMob {
     });
   }
 
-  private applicationStartTasks(claim:string){
+  private applicationStartTasks(claim: string) {
     let claimObj: NewGameClaim = JSON.parse(claim);
     this.claimLockedTime = claimObj.AddedDateTime;
     this.setClaimeStatus();
@@ -73,8 +73,8 @@ class RewardAdMob {
       }
     });
 
-    this.claimStatus.subscribe((val)=>{
-      if(val){
+    this.claimStatus.subscribe(val => {
+      if (val) {
         this.rewardIsActive.set(false);
       }
     });
@@ -117,10 +117,7 @@ class RewardAdMob {
     let am =
       typeof this.amount === "undefined" ? this.CLAIM_COUNT : this.amount;
     let obj = new NewGameClaim(am);
-    SecureStore.setItemAsync(
-      this.SECURE_KEY,
-      JSON.stringify(obj)
-    ).then(() => {
+    SecureStore.setItemAsync(this.SECURE_KEY, JSON.stringify(obj)).then(() => {
       this.setThen();
     });
   };
@@ -145,12 +142,13 @@ class RewardAdMob {
       AdMobRewarded.removeAllListeners();
       this.isVideoClose.set(true);
       this.videoIsLoaded.set(false);
-
     });
 
     AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917").then(
       () => {
-        AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
+        if (!this.videoIsLoaded.get()) {
+          AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
+        }
       }
     );
   };
