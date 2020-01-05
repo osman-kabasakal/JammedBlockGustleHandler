@@ -76,9 +76,76 @@ export default class Block extends Component<BlockProps> {
   componentDidMount() {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
+      // const {
+      //   worldOpt: { step },
+      //   worldOpt,
+      //   objeOpt
+      // } = this.props;
+      // let val = {
+      //   x: objeOpt.x * step.x,
+      //   y: objeOpt.y * step.y
+      // };
+      // this.position.setValue(val);
+      // this._objeRectangle = {
+      //   height: objeOpt.type === "vertical" ? step.y * objeOpt.length : step.y,
+      //   width: objeOpt.type === "horizantal" ? step.x * objeOpt.length : step.x
+      // };
+      // this._panOpt = {
+      //   position: this.position,
+      //   moveType: objeOpt.type,
+      //   realOpt: val,
+      //   worlOpt: worldOpt,
+      //   objRectangle: this._objeRectangle,
+      //   obje:this.props.objeOpt,
+      //   isJammed:this.props.isJammed,
+      //   blockMember:this.props.blockMember,
+      //   finishCb:this.props.finishCb
+      // };
+      // this._gamePanHandler=GamePanHandlerInstance.create(this._panOpt);
+      // this._panResponder = this._gamePanHandler._panHandler;
   }
 
+  UNSAFE_componentWillUpdate(){
+    const {
+      worldOpt: { step },
+      worldOpt,
+      objeOpt
+    } = this.props;
+    let val = {
+      x: objeOpt.x * step.x,
+      y: objeOpt.y * step.y
+    };
+    this.position.setValue(val);
+    this._panOpt = {
+      position: this.position,
+      moveType: objeOpt.type,
+      realOpt: val,
+      worlOpt: worldOpt,
+      objRectangle: this._objeRectangle,
+      obje:this.props.objeOpt,
+      isJammed:this.props.isJammed,
+      blockMember:this.props.blockMember,
+      finishCb:this.props.finishCb
+    };
+    this._gamePanHandler=GamePanHandlerInstance.create(this._panOpt);
+    this._panResponder = this._gamePanHandler._panHandler;
+  }
   componentDidUpdate(){
+    const {
+      worldOpt: { step },
+      worldOpt,
+      objeOpt
+    } = this.props;
+    let val = {
+      x: objeOpt.x * step.x,
+      y: objeOpt.y * step.y
+    };
+    this.position.setValue(val);
+    // this._objeRectangle = {
+    //   height: objeOpt.type === "vertical" ? step.y * objeOpt.length : step.y,
+    //   width: objeOpt.type === "horizantal" ? step.x * objeOpt.length : step.x
+    // };
+    
     
   }
 

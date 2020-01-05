@@ -137,7 +137,6 @@ class RewardAdMob {
     AdMobRewarded.addEventListener("rewardedVideoDidOpen", () => {});
 
     AdMobRewarded.addEventListener("rewardedVideoDidClose", () => {
-      console.log("rewardedVideoDidClose");
       this.setClaim();
       AdMobRewarded.removeAllListeners();
       this.isVideoClose.set(true);
@@ -173,7 +172,6 @@ class RewardAdMob {
   };
 
   onRewarded = (reward: RewardItem) => {
-    console.log("reward", reward);
     this.amount = reward.amount;
     this.isSucces = true;
   };

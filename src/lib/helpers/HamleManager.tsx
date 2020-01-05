@@ -40,13 +40,13 @@ class PanListener {
     let cellCoordinate = members.getCellObj(
       pos,
       this._panOpt.obje,
-      false
+      this._panOpt.obje.type==="horizantal"
     );
     this.relasePosition=Observable.create(cellCoordinate);
     this.relasePosition.subscribe(this.panHamleSetter);
     let hamle:Hamle={}
     hamle[this._panOpt.obje.id]=this.relasePosition.get()
-    this.lastHamle=Observable.create(hamle);
+    this.lastHamle=Observable.create({});
     this._gamePanHandler._panStart.subscribe(this.panStart);
     this._gamePanHandler._panEnd.subscribe(this.panEnd);
     /**
@@ -121,11 +121,11 @@ export default class HamleManager implements IHamleManager {
   blocksOfStarterPosition: Hamle;
 
   panRelaseSubscribe = (newVal: Hamle, oldVal: Hamle) => {
-    let hamleler = Object.assign(
+    let hamleler = JSON.parse(JSON.stringify(Object.assign(
       {},
       this.hamleler[this.hamleler.length - 1],
       newVal
-    );
+    )));
     this.hamleler.push(hamleler);
     /**
      * blockların panlistenerından gelen hamleler işlenecek

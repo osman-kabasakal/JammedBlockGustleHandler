@@ -14,7 +14,6 @@ function ClaimeRender(props) {
   let sub=useRef("default");
   let registerSub=()=>{
     sub.current=RewardManager.claimStatus.subscribe(val => {
-      console.log("subber Calim Sattus",val);
       setClaimStatus(val);
     })
   }

@@ -11,7 +11,6 @@ import {
   UIManager,
   Image,
   ImageBackground,
-  Button,
   ActivityIndicator,
   DrawerLayoutAndroid,
   DrawerLayoutAndroidBase,
@@ -21,7 +20,7 @@ import {
 import { OyunData } from "../../types/DataTypes";
 import Block, { BlockProps } from "../lib/helpers/CreateBlock";
 import BlockMembers from "../lib/helpers/BlockMembers";
-import { Overlay, Text, Icon } from "react-native-elements";
+import { Overlay, Text, Icon,Button } from "react-native-elements";
 import RewardManager from "../lib/helpers/RewardAdMod";
 import Timer from "../components/Timer";
 import HamleManager, { IHamleManager } from "../lib/helpers/HamleManager";
@@ -67,8 +66,8 @@ export default class GameScreen extends MainLayout<{}> {
       UIManager.setLayoutAnimationEnabledExperimental(true);
       var id = this.props.navigation.getParam("id");
     var oyunIndex = this.props.navigation.getParam("index");
-    this.state.startingData=Object.assign({},Oyunlar[id][oyunIndex]);
-    this.state.gameCurrentScreen=Object.assign({},Oyunlar[id][oyunIndex]);
+    this.state.startingData=JSON.parse(JSON.stringify(Oyunlar[id][oyunIndex]));
+    this.state.gameCurrentScreen=JSON.parse(JSON.stringify(Oyunlar[id][oyunIndex]));
   }
 
   content = () => {
@@ -122,7 +121,15 @@ export default class GameScreen extends MainLayout<{}> {
                   }}
                 >
                   {this.state.isWorldLoad && (
-                    this.renderBlocks()
+                    <RenderBlocks
+                    onLoad={() => {
+                      this.isblockOnload = true;
+                    }}
+                    ref={this.renderBlockRef}
+                    data={this.state.gameCurrentScreen}
+                    parentRectangle={this.parentRectangle}
+                    completeCb={this.completeCb}
+                  />
                   )}
                 </View>
               }
@@ -258,35 +265,53 @@ return (<RenderBlocks
       );
 
       return (
-        <FlatList
+        <View
+        style={{
+          position:"relative",
+          width:"100%",
+          height:"100%",
+
+        }}>
+          <Button style={{
+            position:"absolute",
+            top:0,
+            right:0
+          }} icon={<Icon name="close"></Icon>}
+          onPress={()=>{
+            this.drawerLayout.current.closeDrawer();
+          }}></Button>
+          <FlatList
           data={hamObj}
           renderItem={it => {
             return (
             <TouchableOpacity
             onPress={()=>{
-              // let yeniOyun=[];
-              // let copyOyunData=Object.assign({},this.state.startingData);
-              // Object.keys(it.item.value).forEach(val=>{
-              //   let oyun=copyOyunData.BlockPositions.find(x=>x.id===val);
-              //   if(oyun){
-              //     oyun.x=it.item.value[val].x;
-              //     oyun.y=it.item.value[val].y;
-              //     yeniOyun.push(oyun);
-              //   }
-              //   if(val===this.state.startingData.gameId+"_jammed"){
-              //     copyOyunData.JammedPosition=it.item.value[val].y;
-              //   }
-              // });
-              // copyOyunData.BlockPositions=yeniOyun;
-              // this.setState({gameCurrentScreen:copyOyunData});
-              // this.drawerLayout.current.closeDrawer();
+              let yeniOyun=[];
+              let copyOyunData=JSON.parse(JSON.stringify(this.state.gameCurrentScreen));
+              Object.keys(it.item.value).forEach(val=>{
+                let oyun=copyOyunData.BlockPositions.find(x=>x.id===val);
+                if(oyun){
+                  oyun.x=it.item.value[val].x;
+                  oyun.y=it.item.value[val].y;
+                  yeniOyun.push(oyun);
+                }
+                if(val===this.state.startingData.gameId+"_jammed"){
+                  copyOyunData.JammedPosition=it.item.value[val].x;
+                }
+              });
+              copyOyunData.BlockPositions=yeniOyun;
+              this.setState({gameCurrentScreen:copyOyunData});
+              // this.renderBlockRef.current.forceUpdate();
+              this.drawerLayout.current.closeDrawer();
             }}>
               <Text>{it.item.hamleIndexi}. Hamle</Text>
             </TouchableOpacity>);
           }}
           keyExtractor={(it)=>it.hamleIndexi+"hamle"}
         ></FlatList>
-      );
+      
+        </View>
+        );
     }
     return <ActivityIndicator></ActivityIndicator>;
   };
@@ -302,6 +327,14 @@ class RenderBlocks extends Component<{
     super(props);
     // let jsx=this.renderBlocks(this.props.data);
     // this.state.blocks=jsx;
+    this.worldOpt = {
+      parentRectangle: this.props.parentRectangle,
+      step: {
+        x: this.props.parentRectangle.width / 6,
+        y: this.props.parentRectangle.height / 6
+      }
+    };
+    this._blockMember=new BlockMembers(this.worldOpt);
   }
 
   _hamleManager: IHamleManager;
@@ -310,6 +343,13 @@ class RenderBlocks extends Component<{
   jammedRef: React.RefObject<Block>;
   state={
     blocks:([] as JSX.Element[]) 
+  }
+  worldOpt:{
+    parentRectangle: LayoutRectangle,
+      step: {
+        x: number,
+        y: number
+      }
   }
   componentDidMount() {
     // let jsx=this.renderBlocks(this.props.data);
@@ -331,30 +371,30 @@ class RenderBlocks extends Component<{
     this.props.onLoad();
   }
 
-  componentWillUnmount() {
-    this._hamleManager = null;
-  }
-
-  render() {
-    console.log("renderBlock updated")
-    return <>
-    {this.renderBlocks(this.props.data)}
-    </>
-  }
-
-  renderBlocks(oyun: OyunData) {
-    this.blocks = [];
-    let blocks: JSX.Element[] = [];
-    let worldOpt = {
+  UNSAFE_componentWillUpdate(){
+    this.worldOpt={
       parentRectangle: this.props.parentRectangle,
       step: {
         x: this.props.parentRectangle.width / 6,
         y: this.props.parentRectangle.height / 6
       }
     };
-    this._blockMember = new BlockMembers(worldOpt);
+    this._blockMember=new BlockMembers(this.worldOpt);
+  }
+
+  componentWillUnmount() {
+    this._hamleManager = null;
+  }
+
+  render() {
+    return this.renderBlocks(this.props.data);
+  }
+
+  renderBlocks(oyun: OyunData) {
+    this.blocks = [];
+    let blocks: JSX.Element[] = [];
     let staticOpt = {
-      worldOpt: worldOpt,
+      worldOpt: this.worldOpt,
       blockMember: this._blockMember,
       finishCb: this.props.completeCb
     };
