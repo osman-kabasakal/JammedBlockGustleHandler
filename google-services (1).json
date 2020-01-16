@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "429313286973",
+    "firebase_url": "https://sikisan-blok.firebaseio.com",
+    "project_id": "sikisan-blok",
+    "storage_bucket": "sikisan-blok.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429313286973:android:18de1c5baabb4cdf941b54",
+        "android_client_info": {
+          "package_name": "com.kuytudadelirenler.sikisanBlok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429313286973-k7in7k669gk53laenck3673m5dmqhmc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQbyiMbJeeersMY0a_5K_Qc5ay6uBn_rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429313286973-k7in7k669gk53laenck3673m5dmqhmc1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

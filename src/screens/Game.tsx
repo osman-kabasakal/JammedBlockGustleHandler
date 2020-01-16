@@ -324,11 +324,11 @@ class RenderBlocks extends Component<{
   componentDidUpdate() {
     // let jsx=this.renderBlocks(this.props.data);
     // this.setState({blocks:jsx});
-    this._hamleManager = new HamleManager({
-      blockMembers: this._blockMember,
-      blocks: this.blocks
-    });
-    this.props.onLoad();
+    // this._hamleManager = new HamleManager({
+    //   blockMembers: this._blockMember,
+    //   blocks: this.blocks
+    // });
+    // this.props.onLoad();
   }
 
   componentWillUnmount() {

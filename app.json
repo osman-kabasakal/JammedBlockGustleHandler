@@ -25,6 +25,10 @@
       "supportsTablet": true
     },
     "android":{
+      "package": "com.kuytudadelirenler.sikisanBlok",
+      "versionCode": 1,
+      "permissions":[],
+      "googleServicesFile": "./google-services.json",
       "config":{
         "googleMobileAdsAppId":"ca-app-pub-7033389954637971~7754565819"
       }
